@@ -1,6 +1,6 @@
 {
   "name": "petfinder-angular-service",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Angular Service to be used with petfinder api",
   "main": "index.js",
   "scripts": {
