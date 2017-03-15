@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es6",
+        "noImplicitAny": false,
+        "sourceMap": true,
+        "experimentalDecorators": true
+    },
+    "exclude": [
+        "node_modules"
+    ],
+    "files": [
+      "pet-finder.service.ts",
+      "index.ts",
+      "models/index.ts",
+      "models/contact.model.ts",
+      "models/media.model.ts",
+      "models/pet-finder-factory.ts",
+      "models/pet.model.ts",
+      "models/search-options.ts",
+      "models/shelter.model.ts"
+    ]
+}
