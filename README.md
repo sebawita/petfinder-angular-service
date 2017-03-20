@@ -72,32 +72,32 @@ this.petFinderService.findPets(
 
 ## API
 
-  `public breedList(animal: string): Promise<Array<string>>`
+### breedList(animal: string): Promise<string[]>`
 
    * Returns a list of breeds for a particular animal.
    * @param animal type of animal (barnyard, bird, cat, dog, horse, pig, reptile, smallfurry): for a safe list values use Options.animal
 
 
-  `public getPet(id: string | number): Promise<Pet>`
+### getPet(id: string | number): Promise<Pet>`
 
    * Returns a record for a single pet.
    * @param id 
 
 
-  `public getRandomPetId(options: RandomSearchOptions = {}): Promise<number>`
+### getRandomPetId(options: RandomSearchOptions = {}): Promise<number>`
 
    * Returns an id for a randomly selected pet. You can choose the characteristics of the pet you want returned using the various arguments to this method.
    * @param options a set of Random Search Options, which include: animal, breed, location, sex, shelterId, size
 
 
-  `public getRandomPet(options: RandomSearchOptions = {}, provideDescription: boolean = true): Promise<Pet>`
+### getRandomPet(options: RandomSearchOptions = {}, provideDescription: boolean = true): Promise<Pet>`
 
    * Returns a record for a randomly selected pet. You can choose the characteristics of the pet you want returned using the various arguments to this method.
    * @param options a set of Search Options, which include: animal, breed, location, sex, shelterId, size
    * @param provideDescription determines whether the pet description should be provided
 
 
-  `public findPets(location: string, options: PetSearchOptions = {}): Promise<Array<Pet>>`
+### findPets(location: string, options: PetSearchOptions = {}): Promise<Pet[]>`
 
    * Searches for pets according to the criteria you provde and returns a collection of pet records matching your search.
    * The results will contain at most count records per query, and a lastOffset tag.
@@ -106,31 +106,30 @@ this.petFinderService.findPets(
    * @param options a set of Search Options, which include: age, animal, breed, count, offset, output, sex, shelterId, size
 
   
-  `public findShelterPets(id: string | number, options: ShelterPetSearchOptions = {}): Promise<Array<Pet>>`
+### findShelterPets(id: string | number, options: ShelterPetSearchOptions = {}): Promise<Pet[]>`
 
    * Returns a list of pet records for an individual shelter.
    * @param id shelter ID (e.g. NJ94)
    * @param options a set of Search Options, which include: count, offset, output, status
 
 
-  `public findShelters(location: string, options: ShelterSearchOptions = {}): Promise<Array<Shelter>>`
+### findShelters(location: string, options: ShelterSearchOptions = {}): Promise<Shelter[]>
 
    * Returns a collection of shelter records matching your search criteria.
    * @param location the ZIP/postal code or city and state where the search should begin
    * @param options a set of Search Options, which include: count, name, offset
 
 
-  `public getShelter(id: string | number): Promise<Shelter>`
+### getShelter(id: string | number): Promise<Shelter>`
 
    * Returns a record for a single shelter.
    * @param id shelter ID (e.g. NJ94)
 
 
-  `public findSheltersByBreed(animal:string, breed: string, options: ShelterSearchByBreedOptions = {}): Promise<Array<Shelter>>`
+### findSheltersByBreed(animal:string, breed: string, options: ShelterSearchByBreedOptions = {}): Promise<Array<Shelter>>
 
    * Returns a list of shelters, listing animals of a particular breed.
    * WARNING: Shelter name is not returned!
    * @param animal type of animal, valid values: barnyard, bird, cat, dog, horse, pig, reptile, smallfurry. For a safe list of values use Options.animal
    * @param breed breed of animal, use breedList() for a list of valid breeds
    * @param options a set of Search Options, which include: count, offset 
-
