@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgModule, forwardRef, Inject } from '@angular/core';
 import { Http, URLSearchParams } from '@angular/http';
 import { PetFinderFactory, Pet, Shelter, RandomSearchOptions, PetSearchOptions, ShelterSearchOptions, ShelterPetSearchOptions, ShelterSearchByBreedOptions, Options } from './models';
 import { Observable } from 'rxjs/Observable';
@@ -12,7 +12,7 @@ export class PetFinderService {
   private apiKey = '3b3fe2619dfd3c4e94c2d7efd24592e1';
   private baseUrl = 'https://api.petfinder.com/';
 
-  constructor(private http: Http) {
+  constructor(@Inject(forwardRef(() => Http)) private http: Http) {
   }
 
   /** 
@@ -76,7 +76,7 @@ export class PetFinderService {
    * @param location the ZIP/postal code or city and state the animal should be located (NOTE: the closest possible animal will be selected)
    * @param options a set of Search Options, which include: age, animal, breed, count, offset, output, sex, shelterId, size
    */
-  public findPets(location: string, options: PetSearchOptions): Promise<Array<Pet>> {
+  public findPets(location: string, options: PetSearchOptions = {}): Promise<Array<Pet>> {
     const requiredParams = { location };
 
     return this.callPetFinder('pet.find', requiredParams, options)
