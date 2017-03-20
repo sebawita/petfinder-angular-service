@@ -1,2 +1,4 @@
 node_modules
+hooks
 *.js
+*.map.js
