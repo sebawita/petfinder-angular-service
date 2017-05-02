@@ -34,6 +34,24 @@ import { HttpModule } from '@angular/http';
   ],
 ```
 
+### API KEY
+
+You will also need to get a `petfinder api key` from [here](https://www.petfinder.com/developers/api-key).
+
+When you get your key, you need to provide it to the `@NgModule providers` using the `API_KEY_TOKEN` InjectionToken from `petfinder-angular-service`.
+
+``` javascript
+import { PetFinderService, API_KEY_TOKEN } from 'petfinder-angular-service';
+
+@NgModule({
+  ...
+  providers: [
+    ...
+    { provide: API_KEY_TOKEN, useValue: 'your-key-here' },
+    PetFinderService
+  ],
+```
+
 ## Examples of usage
 
 To use the service, just import what you need:

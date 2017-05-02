@@ -1,4 +1,4 @@
-import { Injectable, NgModule, forwardRef, Inject } from '@angular/core';
+import { Injectable, forwardRef, Inject, InjectionToken } from '@angular/core';
 import { Http, URLSearchParams } from '@angular/http';
 import { PetFinderFactory, Pet, Shelter, RandomSearchOptions, PetSearchOptions, ShelterSearchOptions, ShelterPetSearchOptions, ShelterSearchByBreedOptions, Options } from './models';
 import { Observable } from 'rxjs/Observable';
@@ -7,12 +7,13 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise'
 
+export const API_KEY_TOKEN = new InjectionToken<string>('api_key'); 
+
 @Injectable()
 export class PetFinderService {
-  private apiKey = '3b3fe2619dfd3c4e94c2d7efd24592e1';
   private baseUrl = 'https://api.petfinder.com/';
 
-  constructor(@Inject(forwardRef(() => Http)) private http: Http) {
+  constructor(@Inject(forwardRef(() => Http)) private http: Http, @Inject(API_KEY_TOKEN) private apiKey:string) {
   }
 
   /** 
