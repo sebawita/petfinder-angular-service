@@ -9,7 +9,6 @@ import 'rxjs/add/operator/toPromise'
 
 @Injectable()
 export class PetFinderService {
-  private apiKey = '3b3fe2619dfd3c4e94c2d7efd24592e1';
   private baseUrl = '~/offline/';
 
   constructor(private http: Http) {
@@ -126,38 +125,10 @@ export class PetFinderService {
    * @param options an object containing optional parameters
    */
   private callPetFinder(method: string, params: any = {}, options: any = {}): Observable<any> {
-    let searchParams: URLSearchParams = this.buildSearchParams(params, options);
     return this.http.get(
       this.baseUrl + method
     )
     .map(response => response.json())
-    .map((data: any) => data.petfinder)
-    .do(result => {
-      const status = result.header.status;
-      if (status.code.$t !== '100') {
-        throw new Error(status.message.$t);
-      }
-    })
-  }
-  
-  /**
-   * Constructs an http ready set of parameters based on the provided required and optional parameters.
-   * @param params an object containing the required parameters
-   * @param options an object containing optional parameters
-   */
-  private buildSearchParams(params: any, options: any) {
-    let searchParams: URLSearchParams = new URLSearchParams();
-    searchParams.set('key', this.apiKey);
-    searchParams.set('format', 'json');
-
-    for (let key in params) {
-      searchParams.set(key, params[key]);
-    }
-
-    for (let key in options)  {
-      searchParams.set(key, options[key]);
-    }
-
-    return searchParams;
+    .map((data: any) => data.petfinder);
   }
 }
