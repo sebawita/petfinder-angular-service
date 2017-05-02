@@ -11,6 +11,7 @@
     ],
     "files": [
       "pet-finder.service.ts",
+      "offline-pet-finder.service.ts",
       "index.ts",
       "models/index.ts",
       "models/contact.model.ts",
