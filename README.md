@@ -30,7 +30,7 @@ import { HttpModule } from '@angular/http';
   ...
   imports: [
     ...
-    NativeScriptHttpModule
+    HttpModule
   ],
 ```
 
