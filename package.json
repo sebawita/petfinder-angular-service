@@ -1,10 +1,10 @@
 {
   "name": "petfinder-angular-service",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Angular Service to be used with petfinder api",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "transpile": "ngc"
   },
   "repository": {
     "type": "git",
@@ -23,14 +23,15 @@
     "url": "https://github.com/sebawita/petfinder-angular-service/issues"
   },
   "homepage": "https://github.com/sebawita/petfinder-angular-service#readme",
-  "dependencies": {
-    "@angular/common": "4.0.0",
-    "@angular/compiler": "4.0.0",
-    "@angular/core": "4.0.0",
-    "@angular/forms": "4.0.0",
-    "@angular/http": "4.0.0",
-    "@angular/platform-browser": "4.0.0",
-    "@angular/platform-browser-dynamic": "4.0.0",
-    "rxjs": "~5.2.0"
+  "devDependencies": {
+    "@angular/common": "4.2.0",
+    "@angular/compiler": "4.2.0",
+    "@angular/core": "4.2.0",
+    "@angular/forms": "4.2.0",
+    "@angular/http": "4.2.0",
+    "@angular/platform-browser": "4.2.0",
+    "@angular/platform-browser-dynamic": "4.2.0",
+    "rxjs": "~5.4.2",
+    "zone.js": "^0.8.12"
   }
 }
