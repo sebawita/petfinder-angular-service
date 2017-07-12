@@ -1,10 +1,12 @@
 {
     "compilerOptions": {
+        "baseUrl": ".",
         "module": "commonjs",
         "target": "es6",
         "noImplicitAny": false,
         "sourceMap": true,
-        "experimentalDecorators": true
+        "experimentalDecorators": true,
+        "paths": { "@angular/*": ["../node_modules/@angular/*"] }
     },
     "exclude": [
         "node_modules"
@@ -18,7 +20,11 @@
       "models/media.model.ts",
       "models/pet-finder-factory.ts",
       "models/pet.model.ts",
+      "models/raw-pet.model.ts",
       "models/search-options.ts",
       "models/shelter.model.ts"
-    ]
+    ],
+    "angularCompilerOptions": {
+        "strictMetadataEmit": true
+    }
 }
