@@ -1,8 +1,25 @@
+export class AvailableValues {
+  static age: string[] = ['Baby', 'Young', 'Adult', 'Senior'];
+
+  static animal: string[] = ['barnyard', 'bird', 'cat', 'dog', 'horse', 'pig', 'reptile', 'smallfurry']
+
+  static sex: string[] = ['M', 'F'];
+
+  static size: string[] = ['S', 'M', 'L', 'XL'];
+}
+
 export class Options {
-  static ageArray: Array<string> = ['Baby', 'Young', 'Adult', 'Senior'];
-  static animalArray: Array<string> = ['barnyard', 'bird', 'cat', 'dog', 'horse', 'pig', 'reptile', 'smallfurry']
-  static sexArray: Array<string> = ['M', 'F'];
-  static sizeArray: Array<string> = ['S', 'M', 'L', 'XL'];
+  /** @deprecated use AvailableValues.age */
+  static ageArray: string[] = ['Baby', 'Young', 'Adult', 'Senior'];
+
+  /** @deprecated use AvailableValues.animal */
+  static animalArray: string[] = ['barnyard', 'bird', 'cat', 'dog', 'horse', 'pig', 'reptile', 'smallfurry']
+
+  /** @deprecated use AvailableValues.sex */
+  static sexArray: string[] = ['M', 'F'];
+
+  /** @deprecated use AvailableValues.size */
+  static sizeArray: string[] = ['S', 'M', 'L', 'XL'];
 
   /** age of the animal (Baby, Young, Adult, Senior) */
   static age = {
@@ -10,7 +27,7 @@ export class Options {
     young: 'Young',
     adult: 'Adult',
     senior: 'Senior'
-  }
+  };
 
   /** type of animal (barnyard, bird, cat, dog, horse, pig, reptile, smallfurry) */
   static animal = {
@@ -37,14 +54,14 @@ export class Options {
     id: 'id',
     basic: 'basic',
     full: 'full'
-  }
+  };
 
   /** M=male, F=female */
   static sex = {
     male: 'M',
     female: 'F'
   };
-  
+
   /** size of animal (S=small, M=medium, L=large, XL=extra-large) */
   static size = {
     small: 'S',
