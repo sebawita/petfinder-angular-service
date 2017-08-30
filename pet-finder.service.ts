@@ -87,7 +87,12 @@ export class PetFinderService {
       if (result.pets === undefined) {
         return [];
       }
-      return result.pets.pet.map(pet => PetFinderFactory.petFromRaw(pet));
+
+      if (result.pets.pet.length > 0) {
+        return result.pets.pet.map(pet => PetFinderFactory.petFromRaw(pet));
+      }
+
+      return [PetFinderFactory.petFromRaw(result.pets.pet)];
     })
     .toPromise();
   }
@@ -106,7 +111,13 @@ export class PetFinderService {
         return [];
       }
 
-      return result.pets.pet.map(pet => PetFinderFactory.petFromRaw(pet));
+      // if multiple pets returned, then pet is an array
+      if (result.pets.pet.length > 0) {
+        return result.pets.pet.map(pet => PetFinderFactory.petFromRaw(pet));
+      }
+
+      // otherwise pet is an object
+      return [PetFinderFactory.petFromRaw(result.pets.pet)];
     })
     .toPromise();
   }
