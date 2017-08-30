@@ -18,7 +18,7 @@ export class PetFinderService {
    * Returns a list of breeds for a particular animal.
    * @param animal type of animal (barnyard, bird, cat, dog, horse, pig, reptile, smallfurry): for a safe list values use Options.animal
    */
-  public breedList(animal: string): Promise<Array<string>> {
+  public breedList(animal: string): Promise<string[]> {
     throw new Error('not implemented for offline');
   }
 
@@ -58,7 +58,7 @@ export class PetFinderService {
    * @param location the ZIP/postal code or city and state the animal should be located (NOTE: the closest possible animal will be selected)
    * @param options a set of Search Options, which include: age, animal, breed, count, offset, output, sex, shelterId, size
    */
-  public findPets(location: string, options: PetSearchOptions): Promise<Array<Pet>> {
+  public findPets(location: string, options: PetSearchOptions): Promise<Pet[]> {
     const requiredParams = { location };
 
     return this.callPetFinder( 'pets-boston.json')
@@ -76,7 +76,7 @@ export class PetFinderService {
    * @param id shelter ID (e.g. NJ94)
    * @param options a set of Search Options, which include: count, offset, output, status
    */
-  public findShelterPets(id: string | number, options: ShelterPetSearchOptions = {}): Promise<Array<Pet>> {
+  public findShelterPets(id: string | number, options: ShelterPetSearchOptions = {}): Promise<Pet[]> {
     const requiredParams = { location };
 
     //test offline mode:
@@ -95,7 +95,7 @@ export class PetFinderService {
    * @param location the ZIP/postal code or city and state where the search should begin
    * @param options a set of Search Options, which include: count, name, offset
    */
-  public findShelters(location: string, options: ShelterSearchOptions = {}): Promise<Array<Shelter>> {
+  public findShelters(location: string, options: ShelterSearchOptions = {}): Promise<Shelter[]> {
     throw new Error('not implemented for offline');
   }
 
@@ -114,7 +114,7 @@ export class PetFinderService {
    * @param breed breed of animal, use breedList() for a list of valid breeds
    * @param options a set of Search Options, which include: count, offset 
    */
-  public findSheltersByBreed(animal:string, breed: string, options: ShelterSearchByBreedOptions = {}): Promise<Array<Shelter>> {
+  public findSheltersByBreed(animal:string, breed: string, options: ShelterSearchByBreedOptions = {}): Promise<Shelter[]> {
       throw new Error('not implemented for offline');
   }
 

@@ -1,13 +1,13 @@
 export class Media {
 
-  constructor(private photos: Array<any>) {
+  constructor(private photos: any[]) {
   }
 
   /**
    * Returns collection of urls for a given image size
    * @param size of the required image
    */
-  getImages(size: ImageSize): Array<string> {
+  getImages(size: ImageSize): string[] {
     return this.photos.filter(
       val => {
         return val['@size'] === ImageSize[size];
