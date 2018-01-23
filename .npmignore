@@ -1,2 +1,6 @@
+.npmignore
+tsconfig.json
 node_modules
 hooks
+*.ts
+!*.d.ts
