@@ -1,4 +1,5 @@
-import { Contact, Media } from './';
+import { Contact } from './contact.model';
+import { Media } from './media.model';
 
 export interface RawPet {
   id: $t<string>

@@ -1,5 +1,5 @@
-import { Pet, Media, Contact, Shelter } from './';
-import { RawPet, $t } from './raw-pet.model';
+import { Pet, Media, Contact, Shelter } from './models';
+import { RawPet, $t } from './models/raw-pet.model';
 
 export class PetFinderFactory {
   static petFromRaw(rawPet: RawPet): Pet {
