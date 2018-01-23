@@ -1,6 +1,6 @@
 {
   "name": "petfinder-angular-service",
-  "version": "0.4.3",
+  "version": "1.0.3",
   "description": "Angular Service to be used with petfinder api",
   "main": "index.js",
   "scripts": {
@@ -24,14 +24,9 @@
   },
   "homepage": "https://github.com/sebawita/petfinder-angular-service#readme",
   "devDependencies": {
-    "@angular/common": "4.2.0",
-    "@angular/compiler": "4.2.0",
-    "@angular/core": "4.2.0",
-    "@angular/forms": "4.2.0",
-    "@angular/http": "4.2.0",
-    "@angular/platform-browser": "4.2.0",
-    "@angular/platform-browser-dynamic": "4.2.0",
-    "rxjs": "~5.4.2",
+    "@angular/common": "~5.0.0",
+    "@angular/core": "~5.0.0",
+    "rxjs": "~5.5.0",
     "zone.js": "^0.8.12"
   }
 }

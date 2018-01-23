@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http, URLSearchParams } from '@angular/http';
-import { PetFinderFactory, Pet, Shelter, RandomSearchOptions, PetSearchOptions, ShelterSearchOptions, ShelterPetSearchOptions, ShelterSearchByBreedOptions, Options } from './models';
+import { HttpClient } from '@angular/common/http';
+import { Pet, Shelter, RandomSearchOptions, PetSearchOptions, ShelterSearchOptions, ShelterPetSearchOptions, ShelterSearchByBreedOptions, Options } from './models';
+import { PetFinderFactory } from './pet-finder-factory';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/throw'
 import 'rxjs/add/operator/do';
@@ -11,7 +12,7 @@ import 'rxjs/add/operator/toPromise'
 export class PetFinderService {
   private baseUrl = '~/offline/';
 
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
   }
 
   /** 
@@ -128,7 +129,6 @@ export class PetFinderService {
     return this.http.get(
       this.baseUrl + method
     )
-    .map(response => response.json())
     .map((data: any) => data.petfinder);
   }
 }

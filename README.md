@@ -4,10 +4,10 @@
 
 In order to make the service work you need to add an `HttpModule` to your `@NgModule` imports.
 
-For <b>NativeScript</b> use `NativeScriptHttpModule`
+For <b>NativeScript</b> use `NativeScriptHttpClientModule`
 
 ``` javascript
-import { NativeScriptHttpModule } from "nativescript-angular/http";
+import { NativeScriptHttpClientModule } from 'nativescript-angular/http-client';
 ```
 
 ``` javascript
@@ -15,14 +15,14 @@ import { NativeScriptHttpModule } from "nativescript-angular/http";
   ...
   imports: [
     ...
-    NativeScriptHttpModule
+    NativeScriptHttpClientModule
   ],
 ```
 
-For <b>Web</b> use `HttpModule`
+For <b>Web</b> use `HttpClientModule`
 
 ``` javascript
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 ```
 
 ``` javascript
@@ -30,7 +30,7 @@ import { HttpModule } from '@angular/http';
   ...
   imports: [
     ...
-    HttpModule
+    HttpClientModule
   ],
 ```
 
@@ -57,7 +57,8 @@ import { PetFinderService, API_KEY_TOKEN } from 'petfinder-angular-service';
 To use the service, just import what you need:
 
 ``` javascript
-import { PetFinderService, Pet } from "petfinder-angular-service";
+import { PetFinderService } from "petfinder-angular-service";
+import { Pet } from "petfinder-angular-service/models";
 ```
 
 Then inject the service in the constructor:

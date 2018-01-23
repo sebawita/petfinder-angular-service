@@ -1,11 +1,13 @@
 import { Injectable, forwardRef, Inject, InjectionToken } from '@angular/core';
-import { Http, URLSearchParams } from '@angular/http';
-import { PetFinderFactory, Pet, Shelter, RandomSearchOptions, PetSearchOptions, ShelterSearchOptions, ShelterPetSearchOptions, ShelterSearchByBreedOptions, Options } from './models';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Pet, Shelter } from './models';
+import { RandomSearchOptions, PetSearchOptions, ShelterSearchOptions, ShelterPetSearchOptions, ShelterSearchByBreedOptions, Options } from './models';
+import { PetFinderFactory } from './pet-finder-factory';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/throw'
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/toPromise'
+import 'rxjs/add/operator/toPromise';
 
 export const API_KEY_TOKEN = new InjectionToken<string>('api_key');
 
@@ -13,8 +15,8 @@ export const API_KEY_TOKEN = new InjectionToken<string>('api_key');
 export class PetFinderService {
   private baseUrl = 'https://api.petfinder.com/';
 
-  constructor(@Inject(forwardRef(() => Http)) private http: Http, @Inject(API_KEY_TOKEN) private apiKey: string) {
-  }
+  constructor(@Inject(forwardRef(() => HttpClient)) private http: HttpClient, @Inject(API_KEY_TOKEN) private apiKey: string) {
+}
 
   /**
    * Returns a list of breeds for a particular animal.
@@ -24,10 +26,13 @@ export class PetFinderService {
     const requiredParams = { animal };
 
     return this.callPetFinder('breed.list', requiredParams)
-    .map(petfinder =>
-      petfinder.breeds.breed
-      .map(breed => breed.$t)
-    )
+    .map(petfinder => {
+      if (petfinder.breeds.breed) {
+        return petfinder.breeds.breed
+        .map(breed => breed.$t)
+      }
+      return [];
+    })
     .toPromise();
   }
 
@@ -84,7 +89,7 @@ export class PetFinderService {
 
     return this.callPetFinder('pet.find', requiredParams, options)
     .map(result => {
-      if (result.pets === undefined) {
+      if (result.pets === undefined || result.pets.pet === undefined) {
         return [];
       }
 
@@ -161,7 +166,7 @@ export class PetFinderService {
    * @param breed breed of animal, use breedList() for a list of valid breeds
    * @param options a set of Search Options, which include: count, offset
    */
-  public findSheltersByBreed(animal:string, breed: string, options: ShelterSearchByBreedOptions = {}): Promise<Shelter[]> {
+  public findSheltersByBreed(animal: string, breed: string, options: ShelterSearchByBreedOptions = {}): Promise<Shelter[]> {
     const requiredParams = { animal, breed };
 
     return this.callPetFinder('shelter.listByBreed', requiredParams, options)
@@ -182,13 +187,13 @@ export class PetFinderService {
    * @param options an object containing optional parameters
    */
   private callPetFinder(method: string, params: any = {}, options: any = {}): Observable<any> {
-    const searchParams: URLSearchParams = this.buildSearchParams(params, options);
+    const searchParams: HttpParams = this.buildSearchParams(params, options);
+
     return this.http.get(
       // `${this.baseUrl}${method}`,
       this.baseUrl + method,
-      { search: searchParams }
+      { params: searchParams }
     )
-    .map(response => response.json())
     .map((data: any) => data.petfinder)
     .do(result => {
       const status = result.header.status;
@@ -203,17 +208,21 @@ export class PetFinderService {
    * @param params an object containing the required parameters
    * @param options an object containing optional parameters
    */
-  private buildSearchParams(params: any, options: any) {
-    const searchParams: URLSearchParams = new URLSearchParams();
-    searchParams.set('key', this.apiKey);
-    searchParams.set('format', 'json');
+  private buildSearchParams(params: any, options: any): HttpParams {
+    let searchParams: HttpParams = new HttpParams();
+    searchParams = searchParams.append('key', this.apiKey);
+    searchParams = searchParams.append('format', 'json');
 
     for (const key in params) {
-      searchParams.set(key, params[key]);
+      if (params.hasOwnProperty(key)) {
+        searchParams = searchParams.append(key, params[key]);
+      }
     }
 
     for (const key in options)  {
-      searchParams.set(key, options[key]);
+      if (options.hasOwnProperty(key)) {
+        searchParams = searchParams.append(key, options[key]);
+      }
     }
 
     return searchParams;
