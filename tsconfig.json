@@ -5,6 +5,7 @@
         "target": "es6",
         "noImplicitAny": false,
         "sourceMap": true,
+        "declaration": true,
         "experimentalDecorators": true,
         "paths": { "@angular/*": ["../node_modules/@angular/*"] }
     },
@@ -14,11 +15,11 @@
     "files": [
       "pet-finder.service.ts",
       "offline-pet-finder.service.ts",
+      "pet-finder-factory.ts",
       "index.ts",
       "models/index.ts",
       "models/contact.model.ts",
       "models/media.model.ts",
-      "models/pet-finder-factory.ts",
       "models/pet.model.ts",
       "models/raw-pet.model.ts",
       "models/search-options.ts",
