@@ -3,11 +3,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Pet, Shelter } from './models';
 import { RandomSearchOptions, PetSearchOptions, ShelterSearchOptions, ShelterPetSearchOptions, ShelterSearchByBreedOptions, Options } from './models';
 import { PetFinderFactory } from './pet-finder-factory';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw'
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/toPromise';
+import { Observable } from 'rxjs';
+import { tap, map } from 'rxjs/operators';
 
 export const API_KEY_TOKEN = new InjectionToken<string>('api_key');
 
@@ -16,7 +13,7 @@ export class PetFinderService {
   private baseUrl = 'https://api.petfinder.com/';
 
   constructor(@Inject(forwardRef(() => HttpClient)) private http: HttpClient, @Inject(API_KEY_TOKEN) private apiKey: string) {
-}
+  }
 
   /**
    * Returns a list of breeds for a particular animal.
@@ -26,14 +23,13 @@ export class PetFinderService {
     const requiredParams = { animal };
 
     return this.callPetFinder('breed.list', requiredParams)
-    .map(petfinder => {
-      if (petfinder.breeds.breed) {
-        return petfinder.breeds.breed
-        .map(breed => breed.$t)
-      }
-      return [];
-    })
-    .toPromise();
+    .pipe(
+      map(petfinder => {
+        if (petfinder.breeds.breed) {
+          return petfinder.breeds.breed.map(breed => breed.$t);
+        }
+        return [];
+      })).toPromise();
   }
 
   /**
@@ -41,9 +37,10 @@ export class PetFinderService {
    * @param id
    */
   public getPet(id: string | number): Promise<Pet> {
-    return this.callPetFinder('pet.get', {id})
-    .map(result => PetFinderFactory.petFromRaw(result.pet))
-    .toPromise();
+    return this.callPetFinder('pet.get', { id })
+    .pipe(
+      map(result => PetFinderFactory.petFromRaw(result.pet))
+    ).toPromise();
   }
 
   /**
@@ -57,8 +54,9 @@ export class PetFinderService {
     };
 
     return this.callPetFinder('pet.getRandom', requiredParams, options)
-    .map(result => result.petIds.id.$t)
-    .toPromise();
+    .pipe(
+      map(result => result.petIds.id.$t)
+    ).toPromise();
   }
 
   /**
@@ -73,8 +71,9 @@ export class PetFinderService {
     };
 
     return this.callPetFinder('pet.getRandom', requiredParams, options)
-    .map(result =>  PetFinderFactory.petFromRaw(result.pet))
-    .toPromise();
+    .pipe(
+      map(result => PetFinderFactory.petFromRaw(result.pet))
+    ).toPromise();
   }
 
   /**
@@ -88,18 +87,19 @@ export class PetFinderService {
     const requiredParams = { location };
 
     return this.callPetFinder('pet.find', requiredParams, options)
-    .map(result => {
-      if (result.pets === undefined || result.pets.pet === undefined) {
-        return [];
-      }
+    .pipe(
+      map(result => {
+        if (result.pets === undefined || result.pets.pet === undefined) {
+          return [];
+        }
 
-      if (result.pets.pet.length > 0) {
-        return result.pets.pet.map(pet => PetFinderFactory.petFromRaw(pet));
-      }
+        if (result.pets.pet.length > 0) {
+          return result.pets.pet.map(pet => PetFinderFactory.petFromRaw(pet));
+        }
 
-      return [PetFinderFactory.petFromRaw(result.pets.pet)];
-    })
-    .toPromise();
+        return [PetFinderFactory.petFromRaw(result.pets.pet)];
+      })
+    ).toPromise();
   }
 
   /**
@@ -111,20 +111,21 @@ export class PetFinderService {
     const requiredParams = { id };
 
     return this.callPetFinder('shelter.getPets', requiredParams, options)
-    .map(result => {
-      if (result.pets === undefined) {
-        return [];
-      }
+    .pipe(
+      map(result => {
+        if (result.pets === undefined) {
+          return [];
+        }
 
-      // if multiple pets returned, then pet is an array
-      if (result.pets.pet.length > 0) {
-        return result.pets.pet.map(pet => PetFinderFactory.petFromRaw(pet));
-      }
+        // if multiple pets returned, then pet is an array
+        if (result.pets.pet.length > 0) {
+          return result.pets.pet.map(pet => PetFinderFactory.petFromRaw(pet));
+        }
 
-      // otherwise pet is an object
-      return [PetFinderFactory.petFromRaw(result.pets.pet)];
-    })
-    .toPromise();
+        // otherwise pet is an object
+        return [PetFinderFactory.petFromRaw(result.pets.pet)];
+      })
+    ).toPromise();
   }
 
   /**
@@ -136,14 +137,15 @@ export class PetFinderService {
     const requiredParams = { location };
 
     return this.callPetFinder('shelter.find', requiredParams, options)
-    .map(result => {
-      if (result.shelters === undefined) {
-        return [];
-      }
+    .pipe(
+      map(result => {
+        if (result.shelters === undefined) {
+          return [];
+        }
 
-      return result.shelters.shelter.map(shelter => PetFinderFactory.shelterFromRaw(shelter));
-    })
-    .toPromise();
+        return result.shelters.shelter.map(shelter => PetFinderFactory.shelterFromRaw(shelter));
+      })
+    ).toPromise();
   }
 
   /**
@@ -154,8 +156,9 @@ export class PetFinderService {
     const requiredParams = { id };
 
     return this.callPetFinder('shelter.get', requiredParams)
-    .map(result => PetFinderFactory.shelterFromRaw(result.shelter))
-    .toPromise();
+    .pipe(
+      map(result => PetFinderFactory.shelterFromRaw(result.shelter))
+    ).toPromise();
   }
 
   /**
@@ -170,14 +173,15 @@ export class PetFinderService {
     const requiredParams = { animal, breed };
 
     return this.callPetFinder('shelter.listByBreed', requiredParams, options)
-    .map(result => {
-      if (result.shelters === undefined) {
-        return [];
-      }
+    .pipe(
+      map(result => {
+        if (result.shelters === undefined) {
+          return [];
+        }
 
-      return result.shelters.shelter.map(shelter =>  PetFinderFactory.shelterFromRaw(shelter));
-    })
-    .toPromise();
+        return result.shelters.shelter.map(shelter => PetFinderFactory.shelterFromRaw(shelter));
+      })
+    ).toPromise();
   }
 
   /**
@@ -193,14 +197,14 @@ export class PetFinderService {
       // `${this.baseUrl}${method}`,
       this.baseUrl + method,
       { params: searchParams }
-    )
-    .map((data: any) => data.petfinder)
-    .do(result => {
-      const status = result.header.status;
-      if (status.code.$t !== '100') {
-        throw new Error(status.message.$t);
-      }
-    })
+    ).pipe(
+      map((data: any) => data.petfinder),
+      tap(result => {
+        const status = result.header.status;
+        if (status.code.$t !== '100') {
+          throw new Error(status.message.$t);
+        }
+      }));
   }
 
   /**
@@ -219,7 +223,7 @@ export class PetFinderService {
       }
     }
 
-    for (const key in options)  {
+    for (const key in options) {
       if (options.hasOwnProperty(key)) {
         searchParams = searchParams.append(key, options[key]);
       }

@@ -2,11 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Pet, Shelter, RandomSearchOptions, PetSearchOptions, ShelterSearchOptions, ShelterPetSearchOptions, ShelterSearchByBreedOptions, Options } from './models';
 import { PetFinderFactory } from './pet-finder-factory';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw'
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/toPromise'
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class PetFinderService {
@@ -29,8 +26,9 @@ export class PetFinderService {
    */
   public getPet(id: string | number): Promise<Pet> {
     return this.callPetFinder('one-pet.json')
-    .map(result => PetFinderFactory.petFromRaw(result.pet))
-    .toPromise();
+      .pipe(
+        map(result => PetFinderFactory.petFromRaw(result.pet))
+      ).toPromise();
   }
 
   /**
@@ -48,8 +46,9 @@ export class PetFinderService {
    */
   public getRandomPet(options: RandomSearchOptions = {}, provideDescription: boolean = true): Promise<Pet> {
     return this.callPetFinder('one-pet.json')
-    .map(result => PetFinderFactory.petFromRaw(result.pet))
-    .toPromise();
+      .pipe(
+        map(result => PetFinderFactory.petFromRaw(result.pet))
+      ).toPromise();
   }
 
   /**
@@ -62,33 +61,23 @@ export class PetFinderService {
   public findPets(location: string, options: PetSearchOptions): Promise<Pet[]> {
     const requiredParams = { location };
 
-    return this.callPetFinder( 'pets-boston.json')
-    .map(result => {
-      if (result.pets === undefined) {
-        return [];
-      }
-      return result.pets.pet.map(pet => PetFinderFactory.petFromRaw(pet));
-    })
-    .toPromise();
+    return this.callPetFinder('pets-boston.json')
+      .pipe(
+        map(result => result.pets ? result.pets.pet.map(pet => PetFinderFactory.petFromRaw(pet)) : [])
+      ).toPromise();
   }
-  
+
   /**
    * Returns a list of pet records for an individual shelter.
    * @param id shelter ID (e.g. NJ94)
    * @param options a set of Search Options, which include: count, offset, output, status
    */
   public findShelterPets(id: string | number, options: ShelterPetSearchOptions = {}): Promise<Pet[]> {
-    const requiredParams = { location };
-
     //test offline mode:
     return this.callPetFinder('pets-boston.json')
-    .map(result => {
-      if (result.pets === undefined) {
-        return [];
-      }
-      return result.pets.pet.map(pet => PetFinderFactory.petFromRaw(pet));
-    })
-    .toPromise();
+      .pipe(
+        map(result => result.pets ? result.pets.pet.map(pet => PetFinderFactory.petFromRaw(pet)) : [])
+      ).toPromise();
   }
 
   /**
@@ -115,8 +104,8 @@ export class PetFinderService {
    * @param breed breed of animal, use breedList() for a list of valid breeds
    * @param options a set of Search Options, which include: count, offset 
    */
-  public findSheltersByBreed(animal:string, breed: string, options: ShelterSearchByBreedOptions = {}): Promise<Shelter[]> {
-      throw new Error('not implemented for offline');
+  public findSheltersByBreed(animal: string, breed: string, options: ShelterSearchByBreedOptions = {}): Promise<Shelter[]> {
+    throw new Error('not implemented for offline');
   }
 
   /**
@@ -128,7 +117,8 @@ export class PetFinderService {
   private callPetFinder(method: string, params: any = {}, options: any = {}): Observable<any> {
     return this.http.get(
       this.baseUrl + method
-    )
-    .map((data: any) => data.petfinder);
+    ).pipe(
+      map((data: any) => data.petfinder)
+    );
   }
 }
