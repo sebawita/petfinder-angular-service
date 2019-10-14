@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Pet, Shelter, RandomSearchOptions, PetSearchOptions, ShelterSearchOptions, ShelterPetSearchOptions, ShelterSearchByBreedOptions, Options } from './models';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { Pet, Shelter, RandomSearchOptions, PetSearchOptions, ShelterSearchOptions, ShelterPetSearchOptions, ShelterSearchByBreedOptions } from './models';
 import { PetFinderFactory } from './pet-finder-factory';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw'
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/toPromise'
 
 @Injectable()
 export class PetFinderService {
@@ -29,8 +27,9 @@ export class PetFinderService {
    */
   public getPet(id: string | number): Promise<Pet> {
     return this.callPetFinder('one-pet.json')
-    .map(result => PetFinderFactory.petFromRaw(result.pet))
-    .toPromise();
+    .pipe(
+      map(result => PetFinderFactory.petFromRaw(result.pet))
+    ).toPromise();
   }
 
   /**
@@ -48,8 +47,10 @@ export class PetFinderService {
    */
   public getRandomPet(options: RandomSearchOptions = {}, provideDescription: boolean = true): Promise<Pet> {
     return this.callPetFinder('one-pet.json')
-    .map(result => PetFinderFactory.petFromRaw(result.pet))
-    .toPromise();
+    .pipe(
+      map(result => PetFinderFactory.petFromRaw(result.pet))
+    ).toPromise();
+
   }
 
   /**
@@ -62,13 +63,15 @@ export class PetFinderService {
   public findPets(location: string, options: PetSearchOptions): Promise<Pet[]> {
     const requiredParams = { location };
 
-    return this.callPetFinder( 'pets-boston.json')
-    .map(result => {
-      if (result.pets === undefined) {
-        return [];
-      }
-      return result.pets.pet.map(pet => PetFinderFactory.petFromRaw(pet));
-    })
+    return this.callPetFinder('pets-boston.json')
+    .pipe(
+      map(result => {
+        if (result.pets === undefined) {
+          return [];
+        }
+        return result.pets.pet.map(pet => PetFinderFactory.petFromRaw(pet));
+      })
+    )
     .toPromise();
   }
   
@@ -82,13 +85,14 @@ export class PetFinderService {
 
     //test offline mode:
     return this.callPetFinder('pets-boston.json')
-    .map(result => {
-      if (result.pets === undefined) {
-        return [];
-      }
-      return result.pets.pet.map(pet => PetFinderFactory.petFromRaw(pet));
-    })
-    .toPromise();
+    .pipe(
+      map(result => {
+        if (result.pets === undefined) {
+          return [];
+        }
+        return result.pets.pet.map(pet => PetFinderFactory.petFromRaw(pet));
+      })
+    ).toPromise();
   }
 
   /**
@@ -128,7 +132,8 @@ export class PetFinderService {
   private callPetFinder(method: string, params: any = {}, options: any = {}): Observable<any> {
     return this.http.get(
       this.baseUrl + method
-    )
-    .map((data: any) => data.petfinder);
+    ).pipe(
+      map((data: any) => data.petfinder)
+    );
   }
 }
