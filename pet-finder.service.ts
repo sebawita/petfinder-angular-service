@@ -1,10 +1,10 @@
 import { Injectable, forwardRef, Inject, InjectionToken } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Pet, Shelter } from './models';
-import { RandomSearchOptions, PetSearchOptions, ShelterSearchOptions, ShelterPetSearchOptions, ShelterSearchByBreedOptions, Options } from './models';
-import { PetFinderFactory } from './pet-finder-factory';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+
+import { Pet, Shelter, RandomSearchOptions, PetSearchOptions, ShelterSearchOptions, ShelterPetSearchOptions, ShelterSearchByBreedOptions, Options } from './models';
+import { PetFinderFactory } from './pet-finder-factory';
 
 export const API_KEY_TOKEN = new InjectionToken<string>('api_key');
 
